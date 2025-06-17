@@ -5,11 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utez.edu.mx.u3_04_sqm.entity.Almacen;
-import utez.edu.mx.u3_04_sqm.enums.TamanoAlmacen;
+import utez.edu.mx.u3_04_sqm.exception.ResourceNotFoundException;
 import utez.edu.mx.u3_04_sqm.repository.AlmacenRepository;
 import utez.edu.mx.u3_04_sqm.services.interfaces.AlmacenInterface;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,30 +34,31 @@ public class AlmacenService implements AlmacenInterface {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Optional<Almacen> findByClave(String clave) {
-        log.debug("Buscando almacén por clave: {}", clave);
-        return almacenRepository.findByClave(clave);
+    public Almacen save(Almacen almacen) {
+        log.debug("Guardando nuevo almacén: {}", almacen);
+        return almacenRepository.save(almacen);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Almacen> findBySedeId(Long sedeId) {
-        log.debug("Buscando almacenes por sede ID: {}", sedeId);
-        return almacenRepository.findBySedeId(sedeId);
+    public Almacen update(Long id, Almacen almacen) {
+        log.debug("Actualizando almacén con ID: {}", id);
+        return almacenRepository.findById(id)
+                .map(existingAlmacen -> {
+                    existingAlmacen.setPrecioVenta(almacen.getPrecioVenta());
+                    existingAlmacen.setPrecioRenta(almacen.getPrecioRenta());
+                    existingAlmacen.setTamano(almacen.getTamano());
+                    existingAlmacen.setSede(almacen.getSede());
+                    return almacenRepository.save(existingAlmacen);
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("Almacén no encontrado con ID: " + id));
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Almacen> findByTamano(TamanoAlmacen tamano) {
-        log.debug("Buscando almacenes por tamaño: {}", tamano);
-        return almacenRepository.findByTamano(tamano);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Almacen> findByPrecioVentaBetween(BigDecimal minPrecio, BigDecimal maxPrecio) {
-        log.debug("Buscando almacenes por rango de precio: {} - {}", minPrecio, maxPrecio);
-        return almacenRepository.findByPrecioVentaBetween(minPrecio, maxPrecio);
+    public void deleteById(Long id) {
+        log.debug("Eliminando almacén con ID: {}", id);
+        if (!almacenRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Almacén no encontrado con ID: " + id);
+        }
+        almacenRepository.deleteById(id);
     }
 }

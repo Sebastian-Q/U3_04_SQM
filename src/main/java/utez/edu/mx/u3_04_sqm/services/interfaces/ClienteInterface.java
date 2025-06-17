@@ -8,8 +8,6 @@ import java.util.Optional;
 public interface ClienteInterface {
     List<Cliente> findAll();
     Optional<Cliente> findById(Long id);
-    Optional<Cliente> findByCorreoElectronico(String correoElectronico);
-    List<Cliente> findByNombreCompletoContaining(String nombre);
     Cliente save(Cliente cliente);
     Cliente update(Long id, Cliente cliente);
     void deleteById(Long id);

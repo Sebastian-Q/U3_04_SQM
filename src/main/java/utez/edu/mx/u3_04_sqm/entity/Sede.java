@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -22,21 +21,15 @@ public class Sede {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String name;
-
-    @Column(unique = true, nullable = false)
     private String clave;
 
     @NotBlank(message = "El estado es obligatorio")
     @Column(nullable = false)
-    private String state;
+    private String estado;
 
     @NotBlank(message = "El municipio es obligatorio")
     @Column(nullable = false)
     private String municipio;
-
-    @OneToMany(mappedBy = "sede", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Almacen> almacenList;
 
     @PrePersist
     public void generarClave() {

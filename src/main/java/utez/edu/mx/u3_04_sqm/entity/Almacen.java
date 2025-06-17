@@ -1,5 +1,6 @@
 package utez.edu.mx.u3_04_sqm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
@@ -48,6 +49,7 @@ public class Almacen {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sede_id", nullable = false)
     @NotNull(message = "La sede es obligatoria")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Sede sede;
 
     @PrePersist
