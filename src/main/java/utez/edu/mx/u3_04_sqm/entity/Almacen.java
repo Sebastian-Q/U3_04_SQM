@@ -36,11 +36,6 @@ public class Almacen {
     @Column(name = "precio_venta", nullable = false, precision = 10, scale = 2)
     private BigDecimal precioVenta;
 
-    @NotNull(message = "El precio de renta es obligatorio")
-    @DecimalMin(value = "0.0", inclusive = false, message = "El precio de renta debe ser mayor a 0")
-    @Column(name = "precio_renta", nullable = false, precision = 10, scale = 2)
-    private BigDecimal precioRenta;
-
     @Enumerated(EnumType.STRING)
     @NotNull(message = "El tamaño es obligatorio")
     @Column(nullable = false)

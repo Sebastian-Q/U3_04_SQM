@@ -45,7 +45,6 @@ public class AlmacenService implements AlmacenInterface {
         return almacenRepository.findById(id)
                 .map(existingAlmacen -> {
                     existingAlmacen.setPrecioVenta(almacen.getPrecioVenta());
-                    existingAlmacen.setPrecioRenta(almacen.getPrecioRenta());
                     existingAlmacen.setTamano(almacen.getTamano());
                     existingAlmacen.setSede(almacen.getSede());
                     return almacenRepository.save(existingAlmacen);
