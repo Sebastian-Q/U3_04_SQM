@@ -24,7 +24,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/**", "/almacenes/**").authenticated()
+                        .requestMatchers("/api/**", "/ventas/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .httpBasic(httpBasic -> {});

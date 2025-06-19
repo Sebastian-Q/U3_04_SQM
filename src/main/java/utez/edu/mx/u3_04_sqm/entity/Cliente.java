@@ -1,5 +1,6 @@
 package utez.edu.mx.u3_04_sqm.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +9,9 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "clientes")
@@ -34,4 +38,8 @@ public class Cliente {
     @Email(message = "El formato del correo electrónico no es válido")
     @Column(name = "correo_electronico", nullable = false, unique = true)
     private String correoElectronico;
+
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Venta> almacenesComprados = new ArrayList<>();
 }
