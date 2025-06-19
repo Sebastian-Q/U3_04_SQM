@@ -48,6 +48,10 @@ public class VentaService implements VentaInterface {
         Almacen almacen = almacenRepository.findById(ventaRequest.getAlmacenId())
                 .orElseThrow(() -> new ResourceNotFoundException("Almacén no encontrado con ID: " + ventaRequest.getAlmacenId()));
 
+        if (!almacen.getAvailable()) {
+            throw new ResourceNotFoundException("El almacén no está disponible para venta. Ya ha sido vendido.");
+        }
+
         // Verificar que el cliente existe
         Cliente cliente = clienteRepository.findById(ventaRequest.getClienteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado con ID: " + ventaRequest.getClienteId()));
@@ -57,7 +61,7 @@ public class VentaService implements VentaInterface {
         venta.setAlmacen(almacen);
         venta.setCliente(cliente);
         venta.setPrecioVenta(ventaRequest.getPrecioVenta());
-
+        almacen.setAvailable(false);
         return ventaRepository.save(venta);
     }
 }

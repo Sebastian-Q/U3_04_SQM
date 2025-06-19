@@ -41,6 +41,9 @@ public class Almacen {
     @Column(nullable = false)
     private TamanoAlmacen tamano;
 
+    @Column(nullable = false)
+    private boolean available = true;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sede_id", nullable = false)
     @NotNull(message = "La sede es obligatoria")
@@ -55,5 +58,9 @@ public class Almacen {
         if (this.clave == null && this.sede != null) {
             this.clave = String.format("%s-A%d", this.sede.getClave(), this.id != null ? this.id : 0);
         }
+    }
+
+    public boolean getAvailable() {
+        return this.available;
     }
 }
